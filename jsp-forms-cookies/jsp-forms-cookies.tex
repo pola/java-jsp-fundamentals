@@ -1,0 +1,119 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjsp}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=html,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\usetheme{Copenhagen}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Forms and cookies in JSP}
+\author{Martin Pola}
+\date{}
+
+\setlength{\parskip}{0.5cm}
+
+\begin{document}
+	\maketitle
+	
+	\frame
+	{
+		\frametitle{HTML frontend}
+
+		A form can be created in pure HTML, with a range of pre-defined types of input fields.
+
+		\begin{itemize}
+			\item Line input
+			\item Multiple line input (\texttt{textarea})
+			\item Radio buttons
+			\item Checkbox
+			\item Dropdown (\texttt{select})
+		\end{itemize}
+
+		\pause
+
+		In order to handle the data once submitted, one would usually have some server-side logic. That cannot be pure HTML.
+	}
+	
+	\frame
+	{
+		\frametitle{A sample form}
+
+		\lstinputlisting[style=customjsp]{form.part.jsp}
+
+		\pause
+
+		\begin{itemize}
+			\item The \texttt{action} attribute in the \texttt{form} tag specifies where the browser should go upon submission
+			\item The \texttt{name} attribute in the \texttt{input} tag can be used to obtain the value at the server (with JSP)
+		\end{itemize}
+	}
+	
+	\frame
+	{
+		\frametitle{Handle form submission}
+
+		Look at the URL in the browser when the form has been submitted: \\
+		\texttt{...:8080/form-handler.jsp?fullname=Martin+Pola\&age=24}
+
+		The part after the question mark (\texttt{?}) is called the \emph{query string}.
+
+		\lstinputlisting[style=customjsp]{form-handler.jsp}
+	}
+	
+	\frame
+	{
+		\frametitle{From stateless to stateful}
+
+		HTTP is \emph{stateless}. Each request is handled individually and multiple requests from the same browser are not linked together.
+
+		Sometimes, a stateful design is desirable -- e.g. to keep track of a user who is logged in.
+
+		Cookies let us save data in the browser, and have the browser return the data with every sub-sequent request.
+
+		\begin{itemize}
+			\item First, the server sends a \texttt{Set-Cookie} header to save cookie data
+			\item On every subsequent request, the web browser includes a \texttt{Cookie} header containing previously saved cookies
+		\end{itemize}
+	}
+	
+	\frame
+	{
+		\frametitle{Saving a cookie}
+
+		\lstinputlisting[style=customjsp]{form-handler-save-cookie.jsp}
+	}
+	
+	\frame
+	{
+		\frametitle{Reading a cookie}
+
+		\lstinputlisting[style=customjsp]{form-handler-read-cookie.jsp}
+	}
+\end{document}

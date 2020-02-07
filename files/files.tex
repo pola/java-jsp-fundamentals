@@ -1,0 +1,136 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{listings}
+\usepackage{tabularx}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjava}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=java,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\usetheme{Copenhagen}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Working with the file system}
+\author{Martin Pola}
+\date{}
+
+\setlength{\parskip}{0.5cm}
+
+\begin{document}
+	\maketitle
+	
+	\frame
+	{
+		\frametitle{Persistent storage}
+
+		The file system is \emph{persistent}, which means that what you store there will be kept until removal.
+
+		The memory, where objects and primitives live during program execution, is volatile to program interrupts and power outages.
+
+		\pause
+		Files are stored in directories (folders).
+		
+		At the very basic level, all files are just sequences of bytes. To store text, one would typically apply some character encoding (e.g. UTF-8, ASCII or latin1).
+	}
+
+	\begin{frame}
+		\frametitle{File management in programming}
+
+		\emph{Saving} is known as \emph{writing} in software development.
+
+		You cannot, however, just read or write -- consider the following.
+
+		\begin{itemize}
+			\item Files can have permissions (read, read+write) that apply to various users
+			\item Java programs run with the permissions from a user account
+			\pause
+			\item Files can be very large -- too large for memory
+		\end{itemize}
+
+		Typical steps:
+
+		\begin{enumerate}
+			\item Open a \emph{file handler} or \emph{file descriptor} resource
+			\item Set the pointer by seeking to a place in the file
+			\item Perform reading or writing
+			\item Close the resource
+		\end{enumerate}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Reading from a file}
+		\lstinputlisting[style=customjava]{RAF.read.part.java}
+
+		Reading will advance the seek pointer by the number of read bytes.
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Writing to file}
+		\lstinputlisting[style=customjava]{RAF.write.part.java}
+
+		Writing will advance the seek pointer by the number of written bytes.
+
+		It's possible to add content to the end of the file by seeking to the end (\texttt{r.seek(r.length())}) before writing.
+	\end{frame}
+
+	\begin{frame}[fragile]
+		\frametitle{Pathfinding}
+	
+		File paths can be \emph{relative} or \emph{absolute}. Relative paths start at the \emph{working directory}. If the working directory changes, the relative path might point to the wrong location.
+
+		\pause
+
+		\begin{itemize}
+			\item \texttt{../../Downloads/MyFile.java} -- relative path
+			\item \texttt{/Users/mpol/Downloads/MyFile.java} -- absolute path
+			\item \texttt{C:\textbackslash Users\textbackslash mpol\textbackslash Downloads\textbackslash MyFile.java} -- absolute path
+		\end{itemize}
+
+		Note that you'd need to escape your backslashes on Windows!
+
+		\begin{lstlisting}[style=customjava]
+		String myPath = "C:\\Users\\mpol\\...";\end{lstlisting}
+	\end{frame}
+
+	\begin{frame}[fragile]
+		\frametitle{Working directory}
+		Used as a baseline for relative paths.
+		
+		Typically where you stood in your terminal when the program was executed. Change your working directory with \texttt{cd} in your terminal.
+		
+		\begin{itemize}
+			\item \texttt{echo \%cd\%} in Windows command line
+			\item \texttt{pwd} in Unix-like systems (e.g. OS X)
+		\end{itemize}
+
+		Use
+\begin{lstlisting}[style=customjava]
+System.getProperty("user.dir")\end{lstlisting}
+\vspace{-0.5cm}
+to see the current working directory.
+	\end{frame}
+\end{document}

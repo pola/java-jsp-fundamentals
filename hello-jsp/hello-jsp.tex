@@ -1,0 +1,87 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjsp}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=html,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\usetheme{Copenhagen}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Introduction to Java Server Pages (JSP)}
+\author{Martin Pola}
+\date{}
+
+\setlength{\parskip}{0.5cm}
+
+\begin{document}
+	\maketitle
+	
+	\frame
+	{
+		\frametitle{Why use JSP?}
+
+		Creating dynamic websites -- let users not only fetch resources, but also interact with them.
+
+		There are many possibilities.
+
+		\begin{itemize}
+			\item Article comments sections
+			\item Web browser-based chat applications
+			\item Forums
+			\item E-commerce
+			\item Surveys
+		\end{itemize}
+	}
+	
+	\frame
+	{
+		\frametitle{Web server with JSP support}
+
+		It's difficult to develop a web server -- at least for production use.
+
+		\begin{itemize}
+			\item Performance -- handle multiple requests simultaneously
+			\item Security -- don't expose the underlying system
+			\item Maintainability -- the code easily gets quite complex
+		\end{itemize}
+
+		\pause
+
+		Instead, we'll use \emph{Tomcat}, a widely spread, free web server with JSP support.
+	}
+	
+	\frame
+	{
+		\frametitle{A basic JSP file}
+
+		Write normal HTML, but inject Java code whenever suitable. Save with the \texttt{.jsp} extension in the file name, instead of \texttt{.html}.
+
+		\lstinputlisting[style=customjsp]{hello.part.jsp}
+	}
+\end{document}

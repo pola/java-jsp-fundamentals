@@ -1,0 +1,91 @@
+\documentclass[a4paper, english]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\title{Networking and HTTP}
+\author{Martin Pola}
+\date{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue
+}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+}
+
+\begin{document}
+    \maketitle
+
+    \section{Find your IP address}
+        To be able to access a web server, or really any network service, you will need to know which IP address you have. Open a terminal and type \texttt{ipconfig} if you run Windows or \texttt{ifconfig} if you run a Unix-like system. Decipher output (might be long!) and see if you can find the IP address of your computer. Compare with a neighbor! Do your two addresses look similar? Which parts differs?
+
+    \section{Run the web server}
+        Download and run the two following two classes that together form the basis of a simple HTTP server. Try to understand what's happening on a conceptual level (not necessarily what every single line does) and run the web server.
+
+        \begin{itemize}
+            \item \href{https://klistra.in/OxLh3Boa}{HttpServer.java}
+            \item \href{https://klistra.in/fdFQLTJQ}{ClientConnection.java}
+        \end{itemize}
+        
+        Can you access your web server via your IP address? Note that the port is 8080, which is not default for HTTP, so you'd have to add that in your URL. \\
+        \texttt{http://192.168....:8080/}
+
+        When your neighbor runs their web server, can you also access their web server via their IP address?
+    
+    \section{Serve files from your file system}
+        Try to open a few different files in the web browser by visiting URLs like the following (with your own IP address).
+
+        \begin{itemize}
+            \item \texttt{http://192.168....:8080/travel\_diary.htm}
+            \item \texttt{http://192.168....:8080/family\_friends.htm}
+            \item \texttt{http://192.168....:8080/index.htm}
+        \end{itemize}
+
+        You will hopefully see that the web server currently always gives you the same, static response. Let's fix that, by allowing visitors to retrieve HTML files directly from our file system.
+
+        \begin{enumerate}
+            \item Look in the Java console window and see how the URLs above translate to \texttt{request from client} lines in the output (line 35 in \texttt{ClientConnection.java}).
+            \item Add code in the \texttt{parseRequest} method to get only the file name {e.g. \texttt{travel\_diary.htm}} from a request. Save the result in the \texttt{requestedFile} instance variable.
+            \item In the \texttt{fetchResponseData} method, change the value of \texttt{responseBody} to contain the contents of the file specified by the \texttt{requestedFile} variable.
+            \item Create a few sample HTML files, such as \href{https://klistra.in/51oU0Njg}{\texttt{family\_friends.htm}}, and store them in your project.
+        \end{enumerate}
+
+        Now, if you restart your web server, can you access the \texttt{family\_friends.htm} web page in your browser, through your web server?
+
+        \paragraph{Tip!} If you get exceptions about files not being found, even when they exist, make sure they're placed in the right directory. Use your knowledge from the file management presentation to let the web server print out its working directory in the console, and make sure your HTML files are placed there.
+    
+    \section{Page not found}
+        If a client (web browser) requests a file that cannot be found on the file system, the web server should respond with \texttt{404 Not Found} rather than the default \texttt{200 OK}.
+        
+        Modify the \texttt{respondToClient} method to respond with the appropriate status code (\texttt{404 Not Found}) when a requested file could not be found. You would likely also have to modify \texttt{fetchResponseData}, perhaps by surrounding the code for reading a file by a \texttt{try} block.
+
+        \paragraph{Tip!} Let the value of \texttt{responseBody} be either the contents of the requested file or \texttt{null}, depending on whether the file exists or not, respectively. Then, you can have an \texttt{if} statement in the \texttt{respondToClient} method to determine which kind of response your server should send.
+    
+    \section{Index file}
+        If a user visits your website for the first time, they would probably just enter something like \\
+        \texttt{http://192.168....:8080/} \\
+        i.e. they would not specify which file to retrieve.
+        
+        This is a special case. Add code so that all requests to \texttt{/} (with no file name specified) will resolve to a file named \texttt{index.htm}. When you are done, attempts to visit the following two URLs should result in you seeing the exact same page.
+
+        \begin{itemize}
+            \item \texttt{http://192.168....:8080/}
+            \item \texttt{http://192.168....:8080/index.htm}
+        \end{itemize}
+    
+    \section{Serve other file types (stretch task)}
+        Nowadays, the web does not only contain (HTML) text.
+        
+        Modify your web server to be able to serve images as well. You would have to change the \texttt{Content-Type} header in the response, perhaps based on the extensions of the requested file (e.g. \texttt{.htm} or \texttt{.jpg}). For JPEG images, the value of \texttt{Content-Type} is \texttt{image/jpeg}.
+
+        \paragraph{Tip!} You can find the content type of most files by searching on the web for a file's \emph{MIME type}.
+\end{document}

@@ -1,0 +1,56 @@
+\documentclass[a4paper, english]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\title{Generating documentation for Java programs}
+\author{Martin Pola}
+\date{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue
+}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+}
+
+\begin{document}
+    \maketitle
+
+    \section{Your first documentation}
+        Find some of your classes from the previous exercises, preferably some with some methods that would make sense for someone else to use if you shared the class.
+        
+        The \texttt{Book} and \texttt{Movie} classes are probably two good candidates. Ensure that both the class itself is public (e.g. \texttt{public class Book \{...}) and that all methods that are not for internal use, if any, are public too.
+
+        \begin{enumerate}
+            \item Create a new directory for documentation.
+            \item Open a terminal and navigate to your directory with the \texttt{cd} command.
+            \item Generate Javadoc for one of your classes and inspect the results by open the HTML file in your web browser. Use a command like this one:
+            \begin{lstlisting}
+$ javadoc C:\path\to\code\Book.java\end{lstlisting}
+            \item Generate Javadoc for the rest of your classes in the same folder. You can do that by replacing \texttt{Book.java} by \texttt{*.java} (an asterisk).
+        \end{enumerate}
+
+    \section{Write about your classes}
+        Now that you've been able to generate some documentation, it's time to explore how you can use plain English to write about your classes. While the automatically generated documentation usually serves you well to begin with, other people would likely prefer if all those formal definitions in the HTML page were accompanied by some sentences with details about what they are used for.
+
+        Add Javadoc comments (\texttt{/** some information */}) right before your public class, method, enum and property definitions. Use annotation (e.g. \texttt{@author} or \texttt{@param}) whenever reasonable to structure the information a bit.
+
+        To get inspiration, you could look at the following two links.
+
+        \begin{itemize}
+            \item \href{https://klistra.in/YS4JKmal}{Sample class with comments and annotation}
+            \item \href{https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/ArrayList.html}{Javadoc for the ArrayList class}
+        \end{itemize}
+
+        Re-generate your documentation. Where did your comments go? How are the annotations presented? Do you think that your documentation is clear? What can be improved? Look at your neighbours' results and reason with them!
+
+\end{document}

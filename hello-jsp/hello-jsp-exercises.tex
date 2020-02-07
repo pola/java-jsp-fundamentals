@@ -1,0 +1,105 @@
+\documentclass[a4paper, english]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Introduction to Java Server Pages (JSP)}
+\author{Martin Pola}
+\date{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue
+}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+}
+
+\setlist[itemize]{label={$\bullet$}}
+\newcommand{\tomcatfolder}{apache-tomcat-9.0.30}
+
+\begin{document}
+    \maketitle
+
+    \section{Installing Tomcat}
+        To run our Java-based websites, we need a web server with JSP support, and one option is the \emph{Tomcat} web server. Visit \href{https://tomcat.apache.org/}{tomcat.apache.org} and download the core as a compressed ZIP folder. The downloaded file will probably have a name similar to \texttt{\tomcatfolder.zip}, possibly with another version in the 9.x.y series.
+
+        Extract the compressed ZIP folder somewhere on our computer and navigate to it. Among all the files and folders, you should find the following:
+
+        \begin{itemize}
+            \item \texttt{\tomcatfolder}
+            \begin{itemize}
+                \item \texttt{bin}
+                \begin{itemize}
+                    \item \texttt{shutdown.bat}
+                    \item \texttt{shutdown.sh}
+                    \item \texttt{startup.bat}
+                    \item \texttt{startup.sh}
+                \end{itemize}
+                \item \texttt{conf}
+                \begin{itemize}
+                    \item \texttt{catalina.properties}
+                \end{itemize}
+                \item \texttt{webapps}
+                \begin{itemize}
+                    \item \texttt{ROOT}
+                    \begin{itemize}
+                        \item \texttt{WEB-INF}
+                    \end{itemize}
+                \end{itemize}
+            \end{itemize}
+        \end{itemize}
+
+        Open a terminal and use \texttt{cd} to navigate to \texttt{\tomcatfolder}. Start Tomcat by running \texttt{bin\textbackslash startup.bat} if you're using Windows or the \texttt{.sh} equivalent if you're on a Unix-like system. Make sure your server is up and running by visiting \texttt{http://127.0.0.1:8080/} in your web browser.
+        
+        To be successful, you should see a page with this text: \\
+        \emph{If you're seeing this, you've successfully installed Tomcat. Congratulations!}
+
+    \newpage
+    \section{Print something dynamic}
+        In the \texttt{webapps/ROOT} folder, create a new file called \texttt{hello.jsp}. Copy and paste the contents from \href{https://klistra.in/Y7PHSLdX}{this sample hello.jsp} and save the file.
+
+        In your web browser, visit \texttt{http://127.0.0.1:8080/hello.jsp}. Note that you will not have to compile your JSP file; Tomcat will automatically do that for you if it hasn't been compiled already. Tomcat will also re-compile your JSP file if the date of the JSP file is more recent than the date of the compiled version.
+
+    \section{Preparing for classes}
+        While we in the \texttt{hello.jsp} file seem to have forgot everything about classes and methods, like if we had one single \texttt{main} method, it is still possible to use classes with JSP. That could be useful if you for example want to load or store blog posts -- for that purpose we could have a \texttt{BlogPost} class.
+
+        We will store all custom classes in the \texttt{webapps/WEB-INF} folder. In order for Tomcat to find them, we will have to modify the \texttt{conf/catalina.properties} file. Open that file and find the line that starts with \texttt{common.loader=}.
+        
+        At the very end of that line, add this:
+        \begin{lstlisting}
+,"${catalina.base}/webapps/ROOT/WEB-INF"
+\end{lstlisting}
+
+        Restart Tomcat by shutting it down and starting it again in your terminal:
+        \begin{lstlisting}
+$ bin\shutdown.bat
+$ bin\startup.bat
+\end{lstlisting}
+        
+        (Use normal slashes instead of backslashes if you're on a Unix-like system.)
+
+    \section{Using a custom class}
+        Now we will create a class to represent entries (posts) in a blog, and then use it to print the entries.
+
+        \begin{enumerate}
+            \item In the folder \texttt{webapps/ROOT/WEB-INF}, create a new folder called \texttt{blog}.
+            \item Inside that folder, create a new file called \texttt{BlogPost.java}.
+            \item Populate the file with contents from our \href{https://klistra.in/CCB1CNyG}{sample BlogPost.java}.
+            \item Navigate to the folder and compile the file with \texttt{javac}.
+        \end{enumerate}
+
+        After compilation, your \texttt{webapps/ROOT/WEB-INF/blog} folder should contain the files \texttt{BlogPost.java} and \texttt{BlogPost.class}.
+
+        To use the class, go to \texttt{webapps/ROOT} and put the contents of \href{https://klistra.in/v0X9t8dd}{our blog.jsp} in that directory, in a new file called \texttt{blog.jsp}.
+
+        Finally, visit the website: \texttt{http://127.0.0.1:8080/blog.jsp}
+\end{document}

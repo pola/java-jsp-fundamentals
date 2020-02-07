@@ -1,0 +1,115 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjava}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=java,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\usetheme{Copenhagen}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Automated testing in Java}
+\author{Martin Pola}
+\date{}
+
+\setlength{\parskip}{0.5cm}
+
+\begin{document}
+	\maketitle
+	
+	\frame
+	{
+		\frametitle{Practise of testing}
+
+		\begin{itemize}
+			\item Validate that a program does what is expected
+			\item Run tests periodically -- catch errors early
+			\item Manual tests are humans following steps in documents
+			\item Automatic tests are carried out through the use of a \emph{test framework}
+		\end{itemize}
+
+		\pause
+		\begin{itemize}
+			\item Testing doesn't find bugs
+			\item Testing only makes correctness \emph{probable}, it doesn't \emph{prove} it
+		\end{itemize}
+	}
+
+	\frame
+	{
+		\frametitle{Testing in Java}
+
+		\textbf{Unit tests} \\
+		Test single features, typically a method call.
+
+		\textbf{Integration tests} \\
+		Test that different parts of a program can integrate with each other, e.g. a database or a network service.
+
+		\pause
+		We will use \emph{JUnit} as our test framework.
+
+		\begin{itemize}
+			\item A unit test should \emph{assert} something.
+			\item \emph{Expected value} is compared with \emph{actual value}
+		\end{itemize}
+	}
+
+	\frame
+	{
+		\frametitle{Concrete example}
+
+		\lstinputlisting[style=customjava]{example.java}
+		
+		\pause
+		Methods for verifying assertion are found in the \texttt{Assert} class.
+		
+		\begin{itemize}
+			\item \texttt{assertEquals(\underline{expected}, \underline{actual})}
+			\item \texttt{assertTrue(\underline{actual})}
+			\item \texttt{assertFalse(\underline{actual})}
+			\item \texttt{assertNotNull(\underline{actual})}
+			\item ...
+		\end{itemize}
+	}
+
+	\frame
+	{
+		\frametitle{How many tests should you create?}
+
+		\begin{itemize}
+			\item Many tests run quickly; thousands of tests in just a few seconds
+			\item What if you need to change the tests?
+		\end{itemize}
+		
+		\pause
+		How many lines from our program do our tests touch?
+		
+		\pause
+		Measure \emph{code coverage} and aim to cover all lines of code.
+	}
+\end{document}

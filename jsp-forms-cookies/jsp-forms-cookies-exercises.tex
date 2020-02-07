@@ -1,0 +1,100 @@
+\documentclass[a4paper, english]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjsp}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=html,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\title{Forms and cookies in JSP}
+\author{Martin Pola}
+\date{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue
+}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+}
+
+\begin{document}
+    \maketitle
+
+    \section{Creating a feedback form}
+        In \texttt{webapps/ROOT}, create a file named \texttt{feedback.jsp} with a \texttt{textarea} to allow the user to enter multiple lines of text. You can copy \href{https://klistra.in/gGlqrs8v}{this sample feedback.jsp} if you wish to get some inspiration.
+
+        Visit \texttt{http://127.0.0.1:8080/feedback.jsp} and make sure that you can see the form and enter some text.
+
+        Create a file called \texttt{send-feedback.jsp} to handle the scenario when a user submits the form from above. In the file, first just print the submitted data:
+\begin{lstlisting}[style=customjsp,language=java]
+String feedback = request.getParameter("feedback");
+out.write(feedback);\end{lstlisting}
+
+        Save the file and visit the page with your form. Enter some feedback and see to that submitting the form will redirect you to the \texttt{feedback.jsp} page, which displays the entered text.
+
+        Add code in \texttt{send-feedback.jsp} to store the feedback text in a text file on the file system instead of printing it to the web browser. Make sure to print \emph{something}, though, such as \emph{Thank you for your feedback} or similar.
+
+        Now, enter some more feedback in hour feedback form and submit it. Open your text file and see that the text you entered is present there.
+
+        What happens if you submit the form multiple times? Try it out and look at your text file!
+
+        \begin{enumerate}
+            \item Can you get the newly submitted feedback to the saved at the end of the text file, instead of overwriting the current content?
+            \item Can you store a timestamp with each feedback submission in the text file, showing when a feedback item was submitted?
+        \end{enumerate}
+
+    \newpage
+    \section{Should feedback be anonymous?}
+        Add an input field for entering a single line of text to your form, and allow the user to enter their name. Make sure to give the \texttt(input) tag a proper value to the \texttt{name} attribute, so that you can use it to retrieve what the user entered in \texttt{send-feedback.jsp}.
+
+        Edit your form handler file (\texttt{send-feedback.jsp}) to include the name of the user along with the feedback message, in the text file.
+
+        Make sure that your form handler file also sets a cookie with the name of the user.
+
+        Go back to \texttt{feedback.jsp}. Add code to read the cookie with the user's name. If such cookie exists, let the \texttt{input} tag for the name have the value of the cookie as its default value. Note that you would have to use JSP tags (\texttt{<\%} and \texttt{\%>}) to print the value of the cookie.
+        
+        That can be accomplished by setting the \texttt{value} attribute, like this:
+\begin{lstlisting}[style=customjsp]
+<input
+   type="text"
+   name="fullname"
+   value="<% out.write("some value here"); %>"
+/>\end{lstlisting}
+
+        Try to enter some data in the form and submit it. If you open the form in a new tab, will the name seem to have been saved?
+
+        What happend if you open another browser, such as Internet Explorer, Edge or Firefox? Does the form work? Is the name still set automatically?
+
+\end{document}

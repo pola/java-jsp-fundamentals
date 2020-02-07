@@ -1,0 +1,90 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjava}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=java,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\usetheme{Copenhagen}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Generating documentation for Java programs}
+\author{Martin Pola}
+\date{}
+
+\setlength{\parskip}{0.5cm}
+
+\begin{document}
+	\maketitle
+	
+	\frame
+	{
+		\frametitle{When is documentation necessary?}
+
+		\begin{itemize}
+			\item The code base becomes big
+			\item To be able to look back at what you did several months or years ago
+			\item Remembering non-trivial classes and relations between objects
+			\pause
+			\item \emph{When other people are supposed to interact with your code}
+		\end{itemize}
+	}
+
+	\begin{frame}
+		\frametitle{Javadoc}
+	
+		\begin{itemize}
+			\item Automates the process of documentation
+			\item Creates consistent HTML documentation that can be viewed in any modern browser
+			\item Using Javadoc, developers who are familar with Java will know how to read the documentation
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}[fragile]
+		\frametitle{Preparing for Javadoc}
+
+		Add special comments with two asterisks (*) right before class, method, enum or property declarations.
+
+		\begin{lstlisting}[style=customjava]
+/** Some description of what's being declared below */\end{lstlisting}
+
+		\pause
+		It's possible to specify metadata in the documentation.
+
+		\begin{itemize}
+			\item \texttt{@author Martin Pola}
+			\item \texttt{@return An array of previously saved book objects.}
+			\item \texttt{@param title The title of the book.}
+		\end{itemize}
+
+		\pause
+		Navigate to the folder where the documentation should be saved and run the command:
+		\begin{lstlisting}
+$ javadoc C:\path\to\MyClass.java\end{lstlisting}
+	\end{frame}
+\end{document}

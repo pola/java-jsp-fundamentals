@@ -1,0 +1,122 @@
+\documentclass[a4paper, english]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{Working with the file system}
+\author{Martin Pola}
+\date{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue
+}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{customjava}
+{
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\footnotesize,
+	language=java,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=l
+}
+
+\begin{document}
+    \maketitle
+
+    \section{Navigate through the file system}
+        Open a terminal and run the command to print the current working directory (see the slides!). List what's in your current directory by using the \texttt{ls} command on Unix-like systems, or \texttt{dir} on Windows. In IntelliJ, create a new module or project, and then create a class named \texttt{FileEditor}. See to that the class contains a main method like this:
+        \lstinputlisting[style=customjava]{FileEditor.part1.java}
+
+        Using the \texttt{cd} command, navigate to the newly created folder. Compile file file and run it from your terminal:
+        \begin{lstlisting}
+$ javac FileEditor.java
+$ java FileEditor\end{lstlisting}
+
+        Try to run it with a few arguments and make sure that they're being printed:
+        \begin{lstlisting}
+$ java FileEditor arguments one two three \end{lstlisting}
+
+    \section{Read a file}
+        Create an empty text file somewhere in your file system (i.e. in any folder/directory) and add a few lines of text to it. Make sure to have at least five lines.
+
+        In your \texttt{FileEditor} class, prepare a new \texttt{ArrayList} to hold strings.
+        
+        Add code to read the content of your text file to one single string. Split the string on line breaks (e.g. using the \texttt{String\#split} method) and add each line as a separate string to your \texttt{ArrayList} object.
+
+        When you have done so, you should be able to print the contents of the file, line by line, like this:
+        \lstinputlisting[style=customjava]{FileEditor.part2.java}
+    
+    \section{Write to a file}
+        Now, add a string to the end of your \texttt{ArrayList} object, e.g.:
+        \begin{lstlisting}[style=customjava]
+lines.add("A new last string at the very end");\end{lstlisting}
+
+        Write some code to export all the contents from the list into one single Java string. Think about line endings. How would you handle those? What would you like your final string to look like, given a sequence of strings in your \texttt{ArrayList}?
+
+        Save the string to your text file, overwriting the previously stored data.
+
+        You can verify that you've done the right thing by looking at your text file again. If the contents remains the same, but with one extra line added, you've done it right!
+    
+    \section{A useful program -- the line editor}
+        Create a new program that lets the user give the name (path) of a file they wish to edit. You can use a \texttt{Scanner} object to ask the user for that information.
+
+        Then, open the file and print the contents, line by line. Add line numbers to the beginning of each line.
+
+        When the file has been printed, ask the user for the following two pieces of information.
+
+        \begin{itemize}
+            \item The line they wish to edit
+            \item The new data that should be stored on that line
+        \end{itemize}
+
+        Save the data in two variables, edit the internal contents of your \texttt{ArrayList} for the specified line number (index in the list).
+
+        Convert the list to a single string, like in the previous exercise, and save it to the text file. Can you see that all other lines are kept as they were, with the user-specified line being edited?
+    
+    \newpage
+    \section{Exporting \texttt{Book} objects}
+        Now that you've been able to successfully read and write with files, add a method to your \texttt{Book} class to export an instance of the object to a file. Let the method take a string argument to specify the name (the path) of the output file.
+        
+        Since you can only write strings (or bytes) to files, you would have to \emph{encode} your \texttt{Book} data in some way -- you can't export the instance directly. One idea could be to encode the data like this, separating the instance variables by tabs:
+
+        \begin{lstlisting}[style=customjava]
+String encodedObject = productId + "\t" + title + "\t" + author + "\t" + price;\end{lstlisting}
+
+        Create a \texttt{Book} object, populate it with data and call your new method to save it to disk.
+
+    \section{Importing \texttt{Book} objects}
+        Let's do the other way around -- given a text file with information about a book, specified in the format from the previous exercise, create a \texttt{Book} object.
+
+        To do so, create an overloaded (a new) constructor that takes just one argument; a string with the name (the path) of the text file where the book information is stored.
+
+        In the constructor, open the file, read the data, split it on tab characters and copy the data to the instance variables in the \texttt{Book} class.
+\end{document}

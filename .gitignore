@@ -1,0 +1,11 @@
+*.out
+*.log
+*.vrb
+*.snm
+*.fls
+*.aux
+*.nav
+*.toc
+*.class
+*.fdb_latexmk
+*.synctex.*
